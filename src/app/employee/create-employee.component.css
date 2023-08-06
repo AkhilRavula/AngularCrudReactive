@@ -1,0 +1,16 @@
+.form-container {
+    position: absolute;
+    top: 20%;
+    left: 25%;
+    /*transform: translate(-50%, -50%);*/
+  }
+  
+  form {
+    width: 50%;
+  }
+
+  .form-group
+  {
+    margin-bottom: 1rem;
+  }
+

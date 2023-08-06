@@ -1,0 +1,75 @@
+<form [formGroup]="employeeForm" needs-validation class="col-sm-8 form-container" (ngSubmit)="onSubmit()">
+    <div class="card cardmargin ">
+        <h5 class="card-header" style="background-color: #5379a294;">
+            CreateEmployee
+        </h5>
+    <div class="card-body">  
+    <div class="form-group row mb-3" 
+    >
+      <label for="fullname" class="col-sm-2 col-form-label">Full Name:</label>
+      <div class="col-sm-6">
+      <input type="text" class="form-control" id="fullname" 
+      [ngClass]="{'is-invalid' : this.formErrors.fullname}"
+       placeholder="Enter your full name" formControlName="fullname" (blur)="CheckValidation()">
+       <div class="invalid-feedback">
+        {{formErrors.fullname}}
+        </div>
+</div>
+    </div>
+    <div formGroupName="emailGroup">
+    <div class="form-group row mb-3">
+      <label for="email" class="col-sm-2 col-form-label">Email:</label>
+      <div class="col-sm-6">
+      <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+       placeholder="Enter your email" formControlName="email" 
+       [ngClass]="{'is-invalid' : this.formErrors.email}" (blur)="CheckValidation()">
+       <div class="invalid-feedback">
+        {{formErrors.email}}
+        </div>  
+    </div>
+       </div>
+
+       <div class="form-group row mb-3">
+        <label for="Cnfrmemail" class="col-sm-2 col-form-label">C Email:</label>
+        <div class="col-sm-6">
+        <input type="email" class="form-control" id="Cnfrmemail"
+         placeholder="Enter your email" formControlName="confirmemail" 
+         [ngClass]="{'is-invalid' : this.formErrors.confirmemail || this.formErrors.emailGroup}" (blur)="CheckValidation()">
+         <div class="invalid-feedback" *ngIf="formErrors.confirmemail">
+          {{formErrors.confirmemail}}
+          </div>  
+          <div class="invalid-feedback" *ngIf="formErrors.emailGroup && !formErrors.confirmemail">
+            {{formErrors.emailGroup}}
+            </div> 
+      </div>
+         </div>
+        </div>
+       <div formGroupName="skills" class="form-group row bg-light p-1">
+       
+         <label class="col-sm-2 col-form-label">Skills</label>
+         <div class="col-sm-4">
+          <input type="text"  id="skillName" class="form-control" formControlName="skillName" placeholder="skillName">
+         </div>
+         <div class="col-sm-2">
+          <input type="text" placeholder="in Years" class="form-control"
+          id="Experience" formControlName="experience">
+        </div>
+          <div class=" form-group row mt-3">
+            <label class="col-sm-auto">Proficiency</label>
+            <input  class="col-sm-1" type="radio" 
+            id="inlineCheckbox1" value="begineer" formControlName="proficiency">Begineer
+            <input  class="col-sm-1" type="radio" 
+            id="inlineCheckbox2" value="Intermediate" formControlName="proficiency">Intermediate
+            <input  class="col-sm-1" type="radio" 
+            id="inlineCheckbox3" value="Advanced" formControlName="proficiency">Advanced
+          </div>
+       </div>
+        </div>
+        <div class="card-footer" style="background-color: #5379a294;">
+           
+            <button type="submit" class="btn btn-primary" >Save</button>
+            <button type="button" class="btn btn-primary ms-2" (click)="LoadData()">Load Button</button>
+        
+        </div>
+    </div>
+  </form>
