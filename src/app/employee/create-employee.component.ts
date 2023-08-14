@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl, AbstractControlOptions, FormArray } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { employeeservice } from './employee.service';
 import { Iemployee } from './IEMPLOYEE';
 import { ISkill } from './ISKILL';
@@ -14,9 +14,11 @@ import { ISkill } from './ISKILL';
 export class CreateEmployeeComponent {
 
   employeeForm!: FormGroup
-  empid! : number
-  constructor(private fb: FormBuilder,
-    private _activatedroute : ActivatedRoute,private _employeeservice : employeeservice) {
+  empid!: number
+  employee! : Iemployee
+
+  constructor(private fb: FormBuilder,private _router : Router,
+    private _activatedroute: ActivatedRoute, private _employeeservice: employeeservice) {
 
   };
 
@@ -67,7 +69,7 @@ export class CreateEmployeeComponent {
           console.log(this.formErrors);
         }
       }
-      )
+    )
 
 
 
@@ -84,63 +86,73 @@ export class CreateEmployeeComponent {
     //     }
     //   )
     // });
-      this._activatedroute.paramMap.subscribe(
-        (url) => 
-        {
+    this._activatedroute.paramMap.subscribe(
+      (url) => {
 
-          this.empid= Number(url.get('id'));
-          if(this.empid)
-          {
-            this.getemployee(this.empid);
+        this.empid = Number(url.get('id'));
+        if (this.empid) {
+          this.getemployee(this.empid);
+        }
+        else
+        {
+          this.employee = {
+            id : null!,
+            fullname : '',
+            email : '',
+            confirmemail : '',
+            skills : []
           }
-
         }
-      )
-    
+
+      }
+    )
+
   }
 
-  getemployee(empid : number)
-  {
-      this._employeeservice.GetEmployee(empid).subscribe(
-        {
-          next : (employee:Iemployee)=>this.employeebind(employee),
-          error : (err) => console.log(err)
-        }
-      )
-  }
-
-  employeebind(employee : Iemployee)
-  {
-     this.employeeForm.patchValue(
+  getemployee(empid: number) {
+    this._employeeservice.GetEmployee(empid).subscribe(
       {
-        fullname : employee.fullname,
-        emailGroup : {
-          email : employee.email,
-          confirmemail : employee.confirmemail
+        next: (employee: Iemployee) => {
+          this.employeebind(employee);
+          this.employee = employee;
+        },
+        error: (err) => console.log(err)
+      }
+    )
+  }
+
+  employeebind(employee: Iemployee) {
+    this.employeeForm.patchValue(
+      {
+        fullname: employee.fullname,
+        emailGroup: {
+          email: employee.email,
+          confirmemail: employee.confirmemail
         }
       }
-     );
+    );
 
-     this.employeeForm.setControl('skills',this.setSkills(employee.skills));
+    this.employeeForm.setControl('skills', this.setSkills(employee.skills));
   }
 
-  setSkills(skillsarray : ISkill[]) :FormArray
-  {
-        const formArray =  new FormArray<any>([]);
-        skillsarray.forEach(s=>{
-        formArray.push(this.fb.group({ skillName : s.skillName,experience : s.experience,
-          proficiency : s.proficiency }));
-      })
+  setSkills(skillsarray: ISkill[]): FormArray {
+    const formArray = new FormArray<any>([]);
+    skillsarray.forEach(s => {
+      formArray.push(this.fb.group({
+        skillName: [s.skillName, Validators.required], experience: s.experience,
+        proficiency: s.proficiency
+      }));
+    })
 
-      return formArray;
+    return formArray;
   }
 
 
   RemoveSkill(skillIndex: number): void {
 
     //(this.employeeForm.get('skills') as FormArray).removeAt(skillIndex);
-    
-    const skillformarray =  (this.employeeForm.get('skills') as FormArray);
+
+    const skillformarray = (this.employeeForm.get('skills') as FormArray);
 
     skillformarray.removeAt(skillIndex);
     skillformarray.markAsDirty;
@@ -186,14 +198,15 @@ export class CreateEmployeeComponent {
       const abstractcntrl = group.get(key);
 
       this.formErrors[key as keyof typeof this.formErrors] = '';
-      if (abstractcntrl && !abstractcntrl.valid && (abstractcntrl.touched || 
+      if (abstractcntrl && !abstractcntrl.valid && (abstractcntrl.touched ||
         abstractcntrl.dirty || abstractcntrl.value != '')) {
         const validationmsgs = this.ValidationMessages[key as keyof typeof this.ValidationMessages];
 
         for (var errorkey in abstractcntrl.errors) {
           this.formErrors[key as keyof typeof this.formErrors] += validationmsgs[errorkey as keyof typeof validationmsgs] + ' ';
 
-        }      }
+        }
+      }
 
 
       if (abstractcntrl instanceof FormGroup) {
@@ -211,7 +224,30 @@ export class CreateEmployeeComponent {
   }
 
   onSubmit() {
-    console.log(this.employeeForm);
+    //console.log(this.employeeForm);
+    this.MapEmployee();
+    if(this.employee.id){
+    this._employeeservice.UpdateEmployee(this.employee).subscribe(
+       ()=>this._router.navigate(['/List'])
+    );}
+    else
+    {
+       this._employeeservice.AddEmployee(this.employee).subscribe(
+        (emp)=>
+        {
+          console.log(emp);
+          this._router.navigate(['/List']);
+        }
+       );
+    }
+  }
+
+  MapEmployee()
+  {
+    this.employee.fullname = this.employeeForm.value.fullname;
+    this.employee.email = this.employeeForm.value.emailGroup.email;
+    this.employee.confirmemail = this.employeeForm.value.emailGroup.confirmemail;
+    this.employee.skills =  this.employeeForm.value.skills;
   }
 
 }
