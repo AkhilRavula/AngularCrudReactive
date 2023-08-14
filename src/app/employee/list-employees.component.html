@@ -1,1 +1,28 @@
-<p>list-employees works!</p>
+<div class="table-responsive-sm">
+    <table class="table table-bordered rounded-3 mt-3" *ngIf="employees && employees.length">
+        <thead>
+            <tr>
+            <th>Fullname</th>
+            <th>mail</th>
+            <th>confirmmail</th>
+            <th></th>
+            <!-- <th>skillname</th>
+            <th>experience</th>
+            <th>proficiency</th> -->
+        </tr>
+        </thead>
+        <tbody *ngFor="let employee of employees">
+           <tr>
+           <td>{{employee.fullname}}</td>
+           <td>{{employee.email}}</td>
+           <td>{{employee.confirmemail}}</td>
+           <td>
+            <button class="btn btn-primary" (click)="EditEmployee(employee.id)">Edit</button>
+           </td>
+           <!-- <td>{{employee.skills.skillName}}</td>
+           <td>{{employee.skills.experience}}</td>
+           <td>{{employee.skills.proficiency}}</td> -->
+           </tr>
+        </tbody>
+    </table>
+</div>

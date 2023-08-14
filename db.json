@@ -1,0 +1,40 @@
+{
+    "employees" : [
+        {
+            "id" : 1,
+           "fullname" : "Akhil",
+           "email" : "akhil@yahoo.com",
+           "confirmemail" : "akhil@yahoo.com",
+           "skills" :[
+            {
+                "skillName" : "c#",
+                "experience" : 2 ,
+                "proficiency" : "begineer"
+            },
+            {
+                "skillName" : "c#",
+                "experience" : 2 ,
+                "proficiency" : "begineer"
+            }
+           ]
+        },
+        {
+            "id" : 2,
+            "fullname" : "Anil",
+            "email" : "Anil@yahoo.com",
+            "confirmemail" : "Anil@yahoo.com",
+            "skills" :[
+             {
+                 "skillName" : "Java",
+                 "experience" : 2 ,
+                 "proficiency" : "begineer"
+             },
+             {
+                 "skillName" : "Python",
+                 "experience" : 2 ,
+                 "proficiency" : "Advanced"
+             }
+            ]
+        }
+    ]
+}
