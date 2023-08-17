@@ -48,6 +48,19 @@
           "proficiency": "begineer"
         }
       ]
+    },
+    {
+      "id": 4,
+      "fullname": "Shesha",
+      "email": "a@yahoo.com",
+      "confirmemail": "a@yahoo.com",
+      "skills": [
+        {
+          "skillName": "c#",
+          "experience": "22",
+          "proficiency": "Intermediate"
+        }
+      ]
     }
   ]
 }
