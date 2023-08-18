@@ -228,7 +228,7 @@ export class CreateEmployeeComponent {
     this.MapEmployee();
     if(this.employee.id){
     this._employeeservice.UpdateEmployee(this.employee).subscribe(
-       ()=>this._router.navigate(['/List'])
+       ()=>this._router.navigate(['employees/List'])
     );}
     else
     {
@@ -236,7 +236,7 @@ export class CreateEmployeeComponent {
         (emp)=>
         {
           console.log(emp);
-          this._router.navigate(['/List']);
+          this._router.navigate(['employees/List']);
         }
        );
     }

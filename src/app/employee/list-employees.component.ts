@@ -30,6 +30,6 @@ export class ListEmployeesComponent {
 
    EditEmployee(employeeid : number)
    {
-    this._router.navigate(["/edit",employeeid]);
+    this._router.navigate(["employees/edit",employeeid]);
    }
 }

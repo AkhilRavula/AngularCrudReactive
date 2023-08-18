@@ -8,9 +8,9 @@ import { PageNotFoundComponentComponent } from './page-not-found-component.compo
 const routes: Routes = [
 
   {path : 'Home' ,component : HomeComponent},
-  {path : 'List' , component : ListEmployeesComponent},
-  { path : 'Create' , component : CreateEmployeeComponent},
-  { path : 'edit/:id' , component : CreateEmployeeComponent},
+  // {path : 'List' , component : ListEmployeesComponent},
+  // { path : 'Create' , component : CreateEmployeeComponent},
+  // { path : 'edit/:id' , component : CreateEmployeeComponent},
   {path :'',redirectTo:'/Home' ,pathMatch: 'full'},
   {path:'**' ,component:PageNotFoundComponentComponent}
 

@@ -22,10 +22,10 @@ import { PageNotFoundComponentComponent } from './page-not-found-component.compo
     PageNotFoundComponentComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule, EmployeemoduleModule,
     AppRoutingModule,HttpClientModule,
-    ReactiveFormsModule,
-    EmployeemoduleModule
+    ReactiveFormsModule
+
   ],
   providers: [employeeservice],
   bootstrap: [AppComponent]
