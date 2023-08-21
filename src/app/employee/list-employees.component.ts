@@ -22,7 +22,10 @@ export class ListEmployeesComponent {
    {
       this._employeeservice.GetEmployees().subscribe(
         {
-          next:(listemp)=>this.employees=listemp,
+          next:(listemp)=>{
+            this.employees=listemp;
+            console.log(this.employees);
+          },
         error:(err) => console.log(err)
       }
       )

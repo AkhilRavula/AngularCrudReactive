@@ -10,7 +10,9 @@ import { Iemployee } from "./IEMPLOYEE";
 
 export class employeeservice {
 
-   baseUrl : string = 'http://localhost:3000/Employees';
+   //baseUrl : string = 'http://localhost:3000/Employees';
+
+   baseUrl : string ='http://localhost:5142/api/Employees';
 
   constructor(private _httpclient : HttpClient)
   {
@@ -21,7 +23,7 @@ export class employeeservice {
      GetEmployees() : Observable<Iemployee[]>
     {
 
-        return this._httpclient.get<Iemployee[]>('http://localhost:3000/Employees').pipe
+        return this._httpclient.get<Iemployee[]>(this.baseUrl).pipe
         (catchError(this.ErrorHandler));
 
     }
@@ -44,23 +46,23 @@ export class employeeservice {
     }
 
     AddEmployee(employee:Iemployee) : Observable<Iemployee>
-    {   
-        
+    {
+
         return this._httpclient.post<Iemployee>(this.baseUrl,employee,{
           headers : new HttpHeaders({
             'Content-Type' : 'application/json'
           })
-        }).pipe(catchError(this.ErrorHandler));  
+        }).pipe(catchError(this.ErrorHandler));
     }
 
     UpdateEmployee(employee:Iemployee) : Observable<void>
-    {   
-        
+    {
+
         return this._httpclient.put<void>(`${this.baseUrl}/${employee.id}`,employee,{
           headers : new HttpHeaders({
             'Content-Type' : 'application/json'
           })
-        }).pipe(catchError(this.ErrorHandler));   
+        }).pipe(catchError(this.ErrorHandler));
     }
 
 
@@ -70,6 +72,12 @@ export class employeeservice {
       return this._httpclient.delete<void>(`${this.baseUrl}/${empid}`).
       pipe(catchError(this.ErrorHandler));
 
+    }
+
+    deleteSkill(skillId:number) : Observable<void>
+    {
+      return this._httpclient.delete<void>(`${this.baseUrl}/Skills/${skillId}`).
+      pipe(catchError(this.ErrorHandler));
     }
 
 }

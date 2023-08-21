@@ -16,6 +16,8 @@ export class CreateEmployeeComponent {
   employeeForm!: FormGroup
   empid!: number
   employee! : Iemployee
+  DeleteSkillIds = new Array();
+
 
   constructor(private fb: FormBuilder,private _router : Router,
     private _activatedroute: ActivatedRoute, private _employeeservice: employeeservice) {
@@ -113,6 +115,7 @@ export class CreateEmployeeComponent {
     this._employeeservice.GetEmployee(empid).subscribe(
       {
         next: (employee: Iemployee) => {
+          console.log(employee);
           this.employeebind(employee);
           this.employee = employee;
         },
@@ -138,9 +141,10 @@ export class CreateEmployeeComponent {
   setSkills(skillsarray: ISkill[]): FormArray {
     const formArray = new FormArray<any>([]);
     skillsarray.forEach(s => {
-      formArray.push(this.fb.group({
-        skillName: [s.skillName, Validators.required], experience: s.experience,
-        proficiency: s.proficiency
+      formArray.push(
+        this.fb.group({
+        skillname: [s.skillname, Validators.required], experience: s.experience,
+        proficiency: s.proficiency,skillId : s.skillId
       }));
     })
 
@@ -153,10 +157,15 @@ export class CreateEmployeeComponent {
     //(this.employeeForm.get('skills') as FormArray).removeAt(skillIndex);
 
     const skillformarray = (this.employeeForm.get('skills') as FormArray);
-
+    const skilllid = skillformarray.value[skillIndex].skillId;
     skillformarray.removeAt(skillIndex);
     skillformarray.markAsDirty;
     skillformarray.markAsTouched;
+
+    if(skilllid){
+      this.DeleteSkillIds.push(skilllid);
+    //this._employeeservice.deleteSkill(skilllid).subscribe();
+    }
 
   }
   getControls() {
@@ -165,9 +174,10 @@ export class CreateEmployeeComponent {
 
   addSkillsGroup(): FormGroup {
     return this.fb.group({
-      skillName: ['', Validators.required],
+      skillname: ['', Validators.required],
       experience: [''],
-      proficiency: ['begineer']
+      proficiency: ['begineer'],
+      skillId : []
     })
   }
 
@@ -183,7 +193,7 @@ export class CreateEmployeeComponent {
           confirmemail: ''
         },
         skills: {
-          skillName: 'c#',
+          skillname: 'c#',
           experience: 5, proficiency: 'Advanced'
         }
       });
@@ -226,10 +236,18 @@ export class CreateEmployeeComponent {
   onSubmit() {
     //console.log(this.employeeForm);
     this.MapEmployee();
-    if(this.employee.id){
+    if(this.employee.id)
+    {
+
+    this.DeleteSkillIds.forEach(skillid=>
+      {
+        this._employeeservice.deleteSkill(skillid).subscribe();
+      });
+
     this._employeeservice.UpdateEmployee(this.employee).subscribe(
-       ()=>this._router.navigate(['employees/List'])
-    );}
+       ()=>this._router.navigate(['employees/List']));
+
+    }
     else
     {
        this._employeeservice.AddEmployee(this.employee).subscribe(

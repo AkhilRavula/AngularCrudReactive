@@ -1,6 +1,7 @@
-export interface ISkill 
+export interface ISkill
 {
-    skillName : string
+    skillname : string
     experience : number
     proficiency : string
+    skillId : number
 }
