@@ -21,7 +21,13 @@ steps:
     npm install
     ng build --configuration production
   displayName: 'npm install and build'
-  
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'dist\\AngularCrud'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    CleanTargetFolder: true
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
