@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable,of,delay, throwError, catchError } from "rxjs";
+import { Observable,throwError, catchError } from "rxjs";
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Iemployee } from "./IEMPLOYEE";
 
@@ -12,7 +12,7 @@ export class employeeservice {
 
    //baseUrl : string = 'http://localhost:3000/Employees';
 
-   baseUrl : string ='http://localhost:5142/api/Employees';
+   baseUrl  ='http://localhost:5142/api/Employees';
 
   constructor(private _httpclient : HttpClient)
   {
@@ -39,7 +39,7 @@ export class employeeservice {
         return throwError(()=>'Problem with service .Try again Later');
     }
 
-    GetEmployee(empid:Number) : Observable<Iemployee>
+    GetEmployee(empid:number) : Observable<Iemployee>
     {
       return this._httpclient.get<Iemployee>(`${this.baseUrl}/${empid}`).
       pipe(catchError(this.ErrorHandler));
@@ -66,7 +66,7 @@ export class employeeservice {
     }
 
 
-    deleteEmployee(empid:Number) : Observable<void>
+    deleteEmployee(empid:number) : Observable<void>
     {
 
       return this._httpclient.delete<void>(`${this.baseUrl}/${empid}`).

@@ -1,3 +1,5 @@
+<div class="loading" *ngIf="!employees">Loading&#8230;</div>
+
 <div class="table-responsive-sm">
     <table class="table table-bordered rounded-3 mt-3" *ngIf="employees && employees.length">
         <thead>

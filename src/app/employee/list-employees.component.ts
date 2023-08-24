@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { employeeservice } from './employee.service';
 import { Iemployee } from './IEMPLOYEE';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './list-employees.component.html',
   styleUrls: ['./list-employees.component.css']
 })
-export class ListEmployeesComponent {
+export class ListEmployeesComponent implements OnInit{
 
   employees! : Iemployee[]
 
