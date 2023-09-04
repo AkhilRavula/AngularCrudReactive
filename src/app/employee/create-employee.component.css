@@ -2,15 +2,23 @@
     position: absolute;
     top: 20%;
     left: 25%;
-    /*transform: translate(-50%, -50%);*/
   }
-  
-  form {
+
+  /* form {
     width: 50%;
-  }
+  } */
 
   .form-group
   {
     margin-bottom: 1rem;
+  }
+
+  .flexc
+  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 90px;
+
   }
 

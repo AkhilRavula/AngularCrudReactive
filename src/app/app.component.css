@@ -1,3 +1,9 @@
 .active{
     background-color: white;
+    border-radius: 5px;
+}
+
+.radius
+{
+  border-radius: 5px;
 }

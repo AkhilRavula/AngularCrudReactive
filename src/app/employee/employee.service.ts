@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable,throwError, catchError } from "rxjs";
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Iemployee } from "./IEMPLOYEE";
+import { environment } from "src/environments/environment";
 
 
 @Injectable({
@@ -12,7 +13,7 @@ export class employeeservice {
 
    //baseUrl : string = 'http://localhost:3000/Employees';
 
-   baseUrl  ='http://localhost:5142/api/Employees';
+   baseUrl  = environment.baseUrl;
 
   constructor(private _httpclient : HttpClient)
   {
@@ -23,8 +24,7 @@ export class employeeservice {
      GetEmployees() : Observable<Iemployee[]>
     {
 
-        return this._httpclient.get<Iemployee[]>(this.baseUrl).pipe
-        (catchError(this.ErrorHandler));
+        return this._httpclient.get<Iemployee[]>(this.baseUrl).pipe(catchError(this.ErrorHandler));
 
     }
 

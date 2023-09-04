@@ -1,5 +1,8 @@
-<form [formGroup]="employeeForm" needs-validation class="col-sm-8 form-container" (ngSubmit)="onSubmit()">
-    <div class="card cardmargin ">
+<!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
+<form [formGroup]="employeeForm" needs-validation (ngSubmit)="onSubmit()">
+  <div class="row">
+  <div class="col-sm-8">
+  <div class="card cardmargin">
         <h5 class="card-header" style="background-color: #5379a294;">
             CreateEmployee
         </h5>
@@ -86,4 +89,10 @@
 
         </div>
     </div>
+  </div>
+    <div class="col-sm-4">
+      <img src="../../assets/Images/create.png" alt="create"
+      class="img-fluid flexc">
+    </div></div>
 </form>
+
