@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable,throwError, catchError } from "rxjs";
+import { Observable,throwError, catchError, retry } from "rxjs";
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Iemployee } from "./IEMPLOYEE";
 import { environment } from "src/environments/environment";
@@ -19,21 +19,18 @@ export class employeeservice {
   {
 
   }
-
-
      GetEmployees() : Observable<Iemployee[]>
     {
-
-        return this._httpclient.get<Iemployee[]>(this.baseUrl).pipe(catchError(this.ErrorHandler));
-
+        return this._httpclient.get<Iemployee[]>(this.baseUrl).pipe(retry(1),catchError(this.ErrorHandler));
     }
 
     private ErrorHandler(errorresponse : HttpErrorResponse)
     {
         if (errorresponse.error instanceof ErrorEvent) {
-          console.error("Client Side Error =>" , errorresponse.error.message);
-        } else {
-          console.error("Server Side Error =>" , errorresponse.error.message);
+          console.error("Client Side Error =>" , errorresponse.message);
+        } else
+        {
+          console.error("Server Side Error => ErrorCode :" , errorresponse.status+'\nMessage :'+ errorresponse.message);
         }
 
         return throwError(()=>'Problem with service .Try again Later');
@@ -42,7 +39,9 @@ export class employeeservice {
     GetEmployee(empid:number) : Observable<Iemployee>
     {
       return this._httpclient.get<Iemployee>(`${this.baseUrl}/${empid}`).
-      pipe(catchError(this.ErrorHandler));
+      pipe(retry(1),
+        catchError(this.ErrorHandler)
+        );
     }
 
     AddEmployee(employee:Iemployee) : Observable<Iemployee>

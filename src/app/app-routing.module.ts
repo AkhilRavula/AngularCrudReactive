@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CreateEmployeeComponent } from './employee/create-employee.component';
-import { ListEmployeesComponent } from './employee/list-employees.component';
 import { HomeComponent } from './home.component';
 import { PageNotFoundComponentComponent } from './page-not-found-component.component';
+import { LoginEmployeeComponent } from './login-employee/login-employee.component';
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
 
@@ -12,6 +12,8 @@ const routes: Routes = [
   // { path : 'Create' , component : CreateEmployeeComponent},
   // { path : 'edit/:id' , component : CreateEmployeeComponent},
   {path :'',redirectTo:'/Home' ,pathMatch: 'full'},
+  {path:'Register' , component : LoginEmployeeComponent},
+  {path : 'Login' , component:RegisterComponent},
   {path:'**' ,component:PageNotFoundComponentComponent}
 
 ];

@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl, AbstractControlOptions, FormArray } from '@angular/forms';
+/* eslint-disable @typescript-eslint/no-array-constructor */
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControl, AbstractControlOptions, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { employeeservice } from './employee.service';
 import { Iemployee } from './IEMPLOYEE';
 import { ISkill } from './ISKILL';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -11,7 +13,7 @@ import { ISkill } from './ISKILL';
   templateUrl: './create-employee.component.html',
   styleUrls: ['./create-employee.component.css']
 })
-export class CreateEmployeeComponent {
+export class CreateEmployeeComponent implements OnInit{
 
   employeeForm!: FormGroup
   empid!: number
@@ -20,9 +22,10 @@ export class CreateEmployeeComponent {
 
 
   constructor(private fb: FormBuilder,private _router : Router,
-    private _activatedroute: ActivatedRoute, private _employeeservice: employeeservice) {
+    private _activatedroute: ActivatedRoute, private _employeeservice: employeeservice,
+    private toaster : ToastrService) {
 
-  };
+  }
 
   ValidationMessages = {
     'fullname': {
@@ -73,21 +76,6 @@ export class CreateEmployeeComponent {
       }
     )
 
-
-
-    // this.employeeForm = new FormGroup(
-    // {
-    //   fullname : new FormControl(),
-    //   email : new FormControl(),
-
-    //   skills : new FormGroup(
-    //     {
-    //      skillName : new FormControl(),
-    //       experience : new FormControl(),
-    //       proficiency : new FormControl()
-    //     }
-    //   )
-    // });
     this._activatedroute.paramMap.subscribe(
       (url) => {
 
@@ -112,16 +100,33 @@ export class CreateEmployeeComponent {
   }
 
   getemployee(empid: number) {
-    this._employeeservice.GetEmployee(empid).subscribe(
+
+    //Implemented route resolver
+    this._activatedroute.data.subscribe(
       {
-        next: (employee: Iemployee) => {
-          console.log(employee);
-          this.employeebind(employee);
-          this.employee = employee;
-        },
-        error: (err) => console.log(err)
+        next: (data: Iemployee) => {
+          console.log(data['empresol']);
+          this.employeebind(data['empresol']);
+          this.employee = data['empresol'];
+        }
       }
-    )
+    );
+
+    // this._employeeservice.GetEmployee(empid).subscribe(
+    //   {
+    //     next: (employee: Iemployee) => {
+    //       console.log(employee);
+    //       this.employeebind(employee);
+    //       this.employee = employee;
+    //     },
+    //     error: (err) =>
+    //     {
+    //       console.log(err);
+    //       this.toaster.error(err);
+    //     }
+    //   }
+    // )
+
   }
 
   employeebind(employee: Iemployee) {
@@ -212,7 +217,7 @@ export class CreateEmployeeComponent {
         abstractcntrl.dirty || abstractcntrl.value != '')) {
         const validationmsgs = this.ValidationMessages[key as keyof typeof this.ValidationMessages];
 
-        for (var errorkey in abstractcntrl.errors) {
+        for (const errorkey in abstractcntrl.errors) {
           this.formErrors[key as keyof typeof this.formErrors] += validationmsgs[errorkey as keyof typeof validationmsgs] + ' ';
 
         }

@@ -1,16 +1,20 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/click-events-have-key-events -->
 <div class="loading" *ngIf="!employees">Loading&#8230;</div>
-
 <div class="table-responsive-sm">
-    <table class="table table-bordered rounded-3" *ngIf="employees && employees.length">
+    <table class="table table-bordered rounded-3 table-hover" *ngIf="employees && employees.length">
         <thead>
             <tr>
-            <th>Fullname</th>
-            <th>mail</th>
-            <th>confirmmail</th>
+            <th>
+
+              <a (click)="sortBy('fullname')">Fullname {{sortIcon('fullname')}}</a>
+            </th>
+            <th>
+              <a (click)="sortBy('email')">Mail {{sortIcon('email')}}</a></th>
+            <th>
+              <a (click)="sortBy('confirmemail')">confirmmail{{sortIcon('confirmemail')}}</a></th>
             <th></th>
-            <!-- <th>skillname</th>
-            <th>experience</th>
-            <th>proficiency</th> -->
         </tr>
         </thead>
         <tbody *ngFor="let employee of employees">
@@ -21,9 +25,6 @@
            <td>
             <button class="btn btn-primary" (click)="EditEmployee(employee.id)">Edit</button>
            </td>
-           <!-- <td>{{employee.skills.skillName}}</td>
-           <td>{{employee.skills.experience}}</td>
-           <td>{{employee.skills.proficiency}}</td> -->
            </tr>
         </tbody>
     </table>

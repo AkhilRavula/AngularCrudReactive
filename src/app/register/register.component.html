@@ -1,0 +1,22 @@
+<form [formGroup]="Registerform" (ngSubmit)="onSubmit()">
+  <div class="col-sm-4 mx-auto">
+<div class="card">
+  <h5 class="card-header" style="background-color: #5379a294">
+    Login
+  </h5>
+  <div class="card-body">
+
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" formControlName="Username"
+        placeholder="Enter username">
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" formControlName="Password"
+         placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!Registerform.valid">Submit</button>
+
+  </div>
+</div></div> </form>

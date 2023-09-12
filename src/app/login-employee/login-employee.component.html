@@ -1,0 +1,100 @@
+<form [formGroup]="Loginform" (ngSubmit)="onSubmit()">
+  <div class="col-sm-4 mx-auto">
+    <div class="card">
+      <h5 class="card-header" style="background-color: #5379a294">Register</h5>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="username_" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username_"
+            [ngClass]="{ 'is-invalid': Username.errors && Username.touched }"
+            formControlName="Username"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="Username.errors && Username.touched"
+          >
+            Enter Username
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="Password_" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="Password_"
+            [ngClass]="{ 'is-invalid': Password.errors && Password.touched }"
+            formControlName="Password"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="Password.hasError('required') && Password.touched"
+          >
+            Enter Password
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="Password.hasError('minlength') && Password.touched"
+          >
+            Password minsize should be 6
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="ConfirmPassword_" class="form-label"
+            >Confirm Password</label
+          >
+          <input
+            type="password"
+            class="form-control"
+            id="ConfirmPassword_"
+            formControlName="ConfirmPassword"
+            [ngClass]="{
+              'is-invalid': ConfirmPassword.errors && ConfirmPassword.touched && Password.value
+            }"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              ConfirmPassword.hasError('required') && ConfirmPassword.touched && Password.value
+            "
+          >
+            Enter ConfirmPassword
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              ConfirmPassword.hasError('passwordmismatch') &&
+              ConfirmPassword.touched
+            "
+          >
+            Enter ConfirmPassword same as Password
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="role" class="form-label"
+            >Role</label>
+        <select class="form-select" formControlName="Role" id="role" [ngClass]="{ 'is-invalid': Role.errors && Role.touched }">
+          <option selected disabled value="">Select Role</option>
+          <option value="Admin" >Admin</option>
+          <option value="Guest" >Guest</option>
+        </select>
+        <div class="invalid-feedback" *ngIf="Role.errors && Role.touched">
+        Select Role
+      </div>
+      </div>
+
+        <button
+        type="submit"
+        [disabled]="!Loginform.valid"
+        class="btn btn-primary"
+      >
+        Submit
+      </button>
+      </div>
+    </div>
+  </div>
+</form>

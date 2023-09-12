@@ -10,6 +10,7 @@ import { EmployeeRoutingModule } from '../employee-routing.module';
   declarations: [CreateEmployeeComponent,ListEmployeesComponent],
   imports: [
     CommonModule,ReactiveFormsModule,EmployeeRoutingModule
-  ]
+  ],
+  providers : []
 })
 export class EmployeemoduleModule { }

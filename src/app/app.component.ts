@@ -7,4 +7,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'AngularCrudReactive';
+
+  Loggedin()
+  {
+    return localStorage.getItem('token');
+  }
+
+  LoggedOut()
+  {
+     localStorage.removeItem('token');
+  }
 }
