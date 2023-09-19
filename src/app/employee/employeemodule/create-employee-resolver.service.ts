@@ -18,8 +18,9 @@ export const CreateEmployeeResolver: ResolveFn<Iemployee> = (
    return _employeeservice.GetEmployee(empid).pipe(
     catchError((err)=>
     {
-      console.log(err);
-      toaster.error(err,'',{timeOut:4000});
+      const errorMessage = err.error ? err.message : err.statusText;
+      console.log(errorMessage);
+      toaster.error(errorMessage,'',{timeOut:4000});
       router.navigate(['/employees/List'])
       return of(null);
     })

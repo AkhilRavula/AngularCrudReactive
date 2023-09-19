@@ -3,7 +3,9 @@ import { employeeservice } from './employee.service';
 import { Iemployee } from './IEMPLOYEE';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { LowerCasePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { GlobalErrorHandlerService } from '../Services/global-error-handler.service';
+import { AuthServiceService } from '../auth-service.service';
 
 
 @Component({
@@ -18,24 +20,30 @@ export class ListEmployeesComponent implements OnInit{
   sortProperty= 'fullname';
   sortOrder = 1;
   items: Iemployee[];
+  errorMessage: string;
 
   constructor(private _employeeservice : employeeservice,private _router : Router,
-    private toastr: ToastrService)
+    private toastr: ToastrService,private errhandler : GlobalErrorHandlerService,
+    private auth : AuthServiceService)
   {
 
   }
 
    ngOnInit()
    {
+      this.auth.isAuthenticated();
+
       this._employeeservice.GetEmployees().subscribe(
         {
           next:(listemp)=>{
             this.employees=listemp;
             console.log(this.employees);
           },
-        error:(err) => {
+        error:(err:HttpErrorResponse) => {
           console.log(err);
-          this.toastr.error(err,'',{timeOut:4000});
+          this.errhandler.handleError(err);
+          this.errorMessage = err.error ? err.message : err.statusText;
+          this.toastr.error(this.errorMessage,'',{timeOut:4000});
         }
       }
       )
@@ -68,8 +76,11 @@ export class ListEmployeesComponent implements OnInit{
    sortIcon(property : string)
    {
     if (property === this.sortProperty) {
-      return this.sortOrder === 1 ? '☝️' : '👇';
+      return this.sortOrder === 1 ? '↑' : '↓';
     }
      return '';
    }
+
+
+
 }

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ILogin } from '../Models/ILogin';
 import { AuthServiceService } from '../auth-service.service';
+import { JsonPipe } from '@angular/common';
 
 
 @Component({
@@ -45,12 +46,23 @@ export class RegisterComponent implements OnInit{
   {
     this.MapObjects();
     console.log(this.Login);
-    this.authservice.AuthenticateUser();
-    localStorage.setItem('token',this.Login.Username);
-    this.toastr.success('Login Successfull','',{
-      timeOut:1000
-    });
-    this.router.navigate(['/Home']);
+    this.authservice.AuthenticateUser(this.Login).subscribe(
+      {
+        next : (data)=>
+        {
+          localStorage.setItem('Username',data.username);
+          localStorage.setItem('Token',data.token);
+          this.toastr.success('Login Successfull','',{
+            timeOut:4000
+          });
+          this.router.navigate(['/Home']);
+        },
+        error : (err)=>this.toastr.error(err,'',{
+          timeOut:4000
+        })
+      }
+    )
+
   }
 
    MapObjects() {

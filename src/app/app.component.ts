@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NavigationStart, NavigationEnd, NavigationCancel, NavigationError, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,15 +7,27 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'AngularCrudReactive';
 
+  title = 'AngularCrudReactive';
+  loading: boolean;
+
+  constructor(private _router : Router)
+  {
+
+  }
+  getUsername() : string
+  {
+     return localStorage.getItem('Username');
+  }
   Loggedin()
   {
-    return localStorage.getItem('token');
+    return localStorage.getItem('Token');
   }
 
   LoggedOut()
   {
-     localStorage.removeItem('token');
+     localStorage.removeItem('Token');
+     localStorage.removeItem('Username');
   }
+
 }

@@ -1,4 +1,7 @@
 <!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
+
+<div class="spinner" *ngIf="loading"><i class="fa-solid fa-spinner fa-spin fa-2xl">
+</i></div>
 <form [formGroup]="employeeForm" needs-validation (ngSubmit)="onSubmit()">
   <div class="row">
   <div class="col-sm-8">
@@ -90,9 +93,10 @@
         </div>
     </div>
   </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4 d-sm-none d-md-block">
       <img src="../../assets/Images/create.png" alt="create"
-      class="img-fluid flexc">
-    </div></div>
+      class="img-fluid flexc ">
+    </div>
+  </div>
 </form>
 

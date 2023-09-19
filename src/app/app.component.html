@@ -1,6 +1,7 @@
+<!-- eslint-disable @angular-eslint/template/elements-content -->
 <nav class="navbar navbar-expand-md" style="background-color: #5379a294">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="/">
       <img src="../assets/Images/emp.PNG" alt="Emp" width="60" height="40" />
     </a>
     <button
@@ -44,7 +45,10 @@
             <a class="nav-link" routerLink="/Register" routerLinkActive="active">Register</a>
           </li>
           <li class="nav-item" *ngIf="Loggedin()">
-            <a class="nav-link" href="#"
+              <a class="nav-link"> Hi {{getUsername()}}</a>
+          </li>
+          <li class="nav-item" *ngIf="Loggedin()">
+            <a class="nav-link" routerLink="/Login" routerLinkActive="active"
             (click)="LoggedOut()" routerLinkActive="active">Logout</a>
           </li>
         </ul>

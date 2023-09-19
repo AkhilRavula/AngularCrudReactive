@@ -22,7 +22,7 @@ export class LoginEmployeeComponent implements OnInit {
     }
   ngOnInit(): void {
     this.Loginform = this.fb.group({
-      Username : ['',Validators.required],
+      Username : ['',[Validators.required,Validators.maxLength(20)]],
       Password : ['',[Validators.required,Validators.minLength(6)]],
       ConfirmPassword : ['',[Validators.required]],
       Role : ['',[Validators.required]]
@@ -54,11 +54,18 @@ export class LoginEmployeeComponent implements OnInit {
     {
          this.MaptoRegisterObject();
          console.log(this.Register);
-         this.authservice.RegisterUser();
-         this.toastr.success('Registeration Successfull Login to Continue','',{
-          timeOut:5000
-        });
-        this.router.navigate(['/Login'])
+         this.authservice.RegisterUser(this.Register).subscribe(
+          {
+            next : (data)=>{
+              this.toastr.success('Registeration Successfull Login to Continue','',{
+                timeOut:5000
+              });
+              this.router.navigate(['/Login'])
+            },
+            error : (err) => this.toastr.error('Registeration Unsuccessful =>' + err)
+          }
+         )
+
     }
 
 
@@ -67,7 +74,6 @@ export class LoginEmployeeComponent implements OnInit {
           this.Register = {
             Username : this.Username.value,
             Password : this.Password.value,
-            ConfirmPassword : this.ConfirmPassword.value,
             Role : this.Role.value
           }
     }

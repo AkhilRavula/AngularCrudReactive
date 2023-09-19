@@ -18,6 +18,10 @@ import { RegisterComponent } from './register/register.component';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthServiceService } from './auth-service.service';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { NotFoundErrorComponent } from './ErrrorComponent/NotFoundError/NotFoundError.component';
+import { InternalServerErrorComponent } from './ErrrorComponent/InternalServerError/InternalServerError.component';
+import { GlobalErrorHandlerService } from './Services/global-error-handler.service';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -25,15 +29,15 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
     HomeComponent,
     PageNotFoundComponentComponent,
     LoginEmployeeComponent,
-    RegisterComponent
+    RegisterComponent,NotFoundErrorComponent,InternalServerErrorComponent
    ],
   imports: [
-    BrowserModule, EmployeemoduleModule,
+    BrowserModule, EmployeemoduleModule,SharedModule,
     AppRoutingModule,HttpClientModule,
     ReactiveFormsModule,BrowserAnimationsModule ,ToastrModule.forRoot(), CarouselModule.forRoot()
 
   ],
-  providers: [employeeservice,AuthServiceService],
+  providers: [employeeservice,AuthServiceService,GlobalErrorHandlerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-array-constructor */
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, AbstractControlOptions, FormArray } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { employeeservice } from './employee.service';
 import { Iemployee } from './IEMPLOYEE';
 import { ISkill } from './ISKILL';
 import { ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
+import { GlobalErrorHandlerService } from '../Services/global-error-handler.service';
+import { AuthServiceService } from '../auth-service.service';
 
 
 @Component({
@@ -19,11 +22,13 @@ export class CreateEmployeeComponent implements OnInit{
   empid!: number
   employee! : Iemployee
   DeleteSkillIds = new Array();
-
+  errorMessage: string;
+  loading = false;
 
   constructor(private fb: FormBuilder,private _router : Router,
     private _activatedroute: ActivatedRoute, private _employeeservice: employeeservice,
-    private toaster : ToastrService) {
+    private toaster : ToastrService,
+    private errhandler : GlobalErrorHandlerService,private auth:AuthServiceService) {
 
   }
 
@@ -55,6 +60,10 @@ export class CreateEmployeeComponent implements OnInit{
 
 
   ngOnInit() {
+
+
+    this.auth.isAuthenticated();
+
     this.employeeForm = this.fb.group(
       {
         fullname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
@@ -250,16 +259,29 @@ export class CreateEmployeeComponent implements OnInit{
       });
 
     this._employeeservice.UpdateEmployee(this.employee).subscribe(
-       ()=>this._router.navigate(['employees/List']));
+       ()=>{
+        this.employeeForm.markAsPristine();
+        this._router.navigate(['employees/List'])}
+        );
 
     }
     else
     {
        this._employeeservice.AddEmployee(this.employee).subscribe(
-        (emp)=>
         {
-          console.log(emp);
-          this._router.navigate(['employees/List']);
+          next :(emp:Iemployee)=>
+          {
+            this.employeeForm.markAsPristine();
+            console.log(emp);
+            this._router.navigate(['employees/List']);
+          },
+          error : (err:HttpErrorResponse)=>
+          {
+            console.log(err);
+            this.errhandler.handleError(err);
+            this.errorMessage = err.error ? err.message : err.statusText;
+            this.toaster.error(this.errorMessage + ' Login as a ADMIN','',{timeOut:4000});
+          }
         }
        );
     }
@@ -273,6 +295,18 @@ export class CreateEmployeeComponent implements OnInit{
     this.employee.skills =  this.employeeForm.value.skills;
   }
 
+  canExit() : boolean {
+    if(this.employeeForm.dirty)
+    {
+    if (confirm("There are Unsaved Changes.Do you want to discard changes?")) {
+        return true
+      } else {
+        return false
+      }
+    }
+    else
+      return true
+  }
 }
 
 function CustomEmailValidator(control: AbstractControl): { [key: string]: any } | null {
