@@ -31,8 +31,9 @@ export class ListEmployeesComponent implements OnInit{
 
    ngOnInit()
    {
-      this.auth.isAuthenticated();
 
+      if(this.auth.isAuthenticated())
+{
       this._employeeservice.GetEmployees().subscribe(
         {
           next:(listemp)=>{
@@ -47,6 +48,7 @@ export class ListEmployeesComponent implements OnInit{
         }
       }
       )
+    }
    }
 
    EditEmployee(employeeid : number)

@@ -3,7 +3,7 @@
 <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/click-events-have-key-events -->
 <div class="loading" *ngIf="!employees">Loading&#8230;</div>
 <div class="table-responsive-sm">
-    <table class="table table-bordered table-hover table-striped" *ngIf="employees && employees.length">
+    <table id="table_emp" class="table table-bordered table-hover table-striped" *ngIf="employees && employees.length">
         <thead>
             <tr>
             <th>
